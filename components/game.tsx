@@ -19,7 +19,7 @@ const Game: React.FC<GameProps> = ({ rows, columns }) => {
   const [isGameFinished, setIsGameFinished] = useState(false);
   const alertContext = useContext(AlertContext);
   const setAlert = alertContext?.setAlert ?? noopAlert;
-  const { socket, gameId, players, isGameStarted, makeGuess, endGame: socketEndGame } = useSocket();
+  const { socket, gameId, players, isGameStarted, makeGuess } = useSocket();
 
   const { finishGame } = useGameLogic(setIsGameFinished, setAlert);
 
@@ -52,9 +52,6 @@ const Game: React.FC<GameProps> = ({ rows, columns }) => {
         finishGame();
       } else if (row < rows - 1) {
         setActiveRow(row + 1);
-      } else {
-        // Game over, no more rows
-        socketEndGame('lose');
       }
     });
 
@@ -67,7 +64,7 @@ const Game: React.FC<GameProps> = ({ rows, columns }) => {
       socket.off('guessResult');
       socket.off('gameEnded');
     };
-  }, [socket, inputStatus, columns, rows, finishGame, setAlert, socketEndGame]);
+  }, [socket, inputStatus, columns, rows, finishGame, setAlert]);
 
   useEffect(() => {
     if (!isGameStarted) return;

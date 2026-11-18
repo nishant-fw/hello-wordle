@@ -13,7 +13,7 @@ export const useInputHandling = (
   setInputStatus: React.Dispatch<React.SetStateAction<InputStatus[]>>,
   rows: number,
   finishGame: () => void,
-  makeGuess: (guess: string, row: number) => void
+  makeGuess: (guess: string) => void
 ) => {
   const focusElement = useCallback((element: HTMLElement | null) => {
     if (element) {
@@ -73,7 +73,7 @@ export const useInputHandling = (
         
         if (rowInputs.every(input => input.trim() !== '')) {
           const guess = rowInputs.join('');
-          makeGuess(guess, rowIndex);
+          makeGuess(guess);
         }
       } else if ((/^[a-zA-Z]$/.test(key)) && val !== '') {
         const next = target.nextElementSibling as HTMLInputElement;
