@@ -147,3 +147,40 @@ input:focus {
 .lobby-error {
   color: #e53935;
 }
+
+/* Game screen */
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.game-title {
+  font-size: 18px;
+  letter-spacing: 0.1em;
+}
+
+.game-boards {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.opponent-label {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.opponent-cell {
+  width: 20px;
+  height: 20px;
+}
+
+.game-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+}

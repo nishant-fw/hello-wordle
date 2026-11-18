@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 export const useGameLogic = (
   setIsGameFinished: React.Dispatch<React.SetStateAction<boolean>>,
-  setAlert: (message: string, type: string) => void
+  setAlert: (message: string, type: string, timeout?: number) => void
 ) => {
   const endGame = useCallback(() => {
     // Select all input elements with the class 'input'
@@ -19,10 +19,10 @@ export const useGameLogic = (
     });
   }, []);
 
-  const finishGame = useCallback(() => {
+  const finishGame = useCallback((message: string, type: string) => {
     setIsGameFinished(true);
     endGame();
-    setAlert('Game finished!', 'success');
+    setAlert(message, type, 4000);
   }, [setIsGameFinished, endGame, setAlert]);
 
   return { finishGame, endGame };

@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import { InputStatus } from './types';
 
 export const useInputHandling = (
   inputs: string[],
@@ -8,12 +7,7 @@ export const useInputHandling = (
   activeRow: number,
   columns: number,
   setLastFocusedIndex: React.Dispatch<React.SetStateAction<number>>,
-  setActiveRow: React.Dispatch<React.SetStateAction<number>>,
-  inputStatus: InputStatus[],
-  setInputStatus: React.Dispatch<React.SetStateAction<InputStatus[]>>,
-  rows: number,
-  finishGame: () => void,
-  makeGuess: (guess: string) => void
+  submitGuess: (guess: string) => void
 ) => {
   const focusElement = useCallback((element: HTMLElement | null) => {
     if (element) {
@@ -73,7 +67,7 @@ export const useInputHandling = (
         
         if (rowInputs.every(input => input.trim() !== '')) {
           const guess = rowInputs.join('');
-          makeGuess(guess);
+          submitGuess(guess);
         }
       } else if ((/^[a-zA-Z]$/.test(key)) && val !== '') {
         const next = target.nextElementSibling as HTMLInputElement;
@@ -89,7 +83,7 @@ export const useInputHandling = (
         }
       }
     }
-  }, [inputs, focusElement, activeRow, columns, inputsRef, setInputs, setLastFocusedIndex, makeGuess]);
+  }, [inputs, focusElement, activeRow, columns, inputsRef, setInputs, setLastFocusedIndex, submitGuess]);
 
   return { handleInput, handleKeyUp };
 };
