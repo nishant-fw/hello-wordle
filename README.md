@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# hello-wordle
 
-## Getting Started
+A two-player Wordle race. Both players guess the same secret five-letter
+word; the first to solve it wins. You see your own letters and colours,
+and only the colours of your opponent's guesses.
 
-First, run the development server:
+The Next.js app is the client. A small socket.io server in `server/`
+picks the word, scores every guess and decides who won, so the answer
+never reaches a browser.
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run server   # game server on http://localhost:3001
+npm run dev      # app on http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the app in two browser windows. In one, choose **Create game** and
+share the code it shows; in the other, enter the code and choose **Join**.
+Type a guess and press Enter in the last cell of the row.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Used by | Default |
+| --- | --- | --- |
+| `PORT` | server | `3001` |
+| `CLIENT_ORIGIN` | server (CORS) | `http://localhost:3000` |
+| `NEXT_PUBLIC_SOCKET_URL` | app | `http://localhost:3001` |
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Rules
 
-## Learn More
+- Six guesses of five letters each. Guesses are not checked against a
+  dictionary.
+- A player who runs out of guesses waits; the game ends without a winner
+  when both have.
+- If a player disconnects, the other wins.
 
-To learn more about Next.js, take a look at the following resources:
+## Checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm test         # game rules and scoring (node --test)
+npm run lint
+npx tsc --noEmit
+npm run build
+```
