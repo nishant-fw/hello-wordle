@@ -7,6 +7,8 @@ import { useInputHandling } from './useInputHandling';
 import GameBoard from './GameBoard';
 import { useSocket } from './SocketContext';
 
+const noopAlert = () => {};
+
 const Game: React.FC<GameProps> = ({ rows, columns }) => {
   const totalInputs = rows * columns;
   const [inputs, setInputs] = useState<string[]>(Array(totalInputs).fill(''));
@@ -16,15 +18,10 @@ const Game: React.FC<GameProps> = ({ rows, columns }) => {
   const [lastFocusedIndex, setLastFocusedIndex] = useState(0);
   const [isGameFinished, setIsGameFinished] = useState(false);
   const alertContext = useContext(AlertContext);
+  const setAlert = alertContext?.setAlert ?? noopAlert;
   const { socket, gameId, players, isGameStarted, makeGuess, endGame: socketEndGame } = useSocket();
 
-  if (!alertContext) {
-    return <div>Context is not provided!</div>;
-  }
-
-  const { setAlert } = alertContext;
-
-  const { finishGame, endGame } = useGameLogic(setIsGameFinished, setAlert, socketEndGame);
+  const { finishGame } = useGameLogic(setIsGameFinished, setAlert);
 
   const { handleInput, handleKeyUp } = useInputHandling(
     inputs,
@@ -101,6 +98,10 @@ const Game: React.FC<GameProps> = ({ rows, columns }) => {
       document.removeEventListener('touchstart', preventMouseFocusChange);
     };
   }, [inputs, lastFocusedIndex, activeRow, columns, isGameStarted]);
+
+  if (!alertContext) {
+    return <div>Context is not provided!</div>;
+  }
 
   if (!isGameStarted) {
     return <div>Waiting for opponent...</div>;

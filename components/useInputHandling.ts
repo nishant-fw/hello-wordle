@@ -89,7 +89,7 @@ export const useInputHandling = (
         }
       }
     }
-  }, [inputs, focusElement, activeRow, columns, rows, inputsRef, setInputs, setLastFocusedIndex, setActiveRow, makeGuess]);
+  }, [inputs, focusElement, activeRow, columns, inputsRef, setInputs, setLastFocusedIndex, makeGuess]);
 
   return { handleInput, handleKeyUp };
 };
